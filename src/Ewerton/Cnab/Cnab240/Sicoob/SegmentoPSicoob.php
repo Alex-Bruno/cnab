@@ -209,7 +209,7 @@ class SegmentoPSicoob extends SegmentoPGenerico
 
         $cont = 0;
         $calculoDv = 0;
-        for ($i = 0; $i <= strlen($sequencia); $i++) {
+        for ($i = 0; $i < strlen($sequencia); $i++) {
             $cont++;
             if ($cont == 1) {
                 $constante = 3;

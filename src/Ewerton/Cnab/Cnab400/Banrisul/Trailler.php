@@ -15,6 +15,7 @@ use Ewerton\Cnab\Cnab240\Generico\CnabInterface;
 class Trailler implements CnabInterface
 {
     private $sequencialRegistro;
+    private $somatorioTitulos;
     /**
      * @return mixed
      */
@@ -33,11 +34,33 @@ class Trailler implements CnabInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getSomatorioTitulos()
+    {
+        return sprintf("%013d", number_format($this->somatorioTitulos, 2, '', ''));
+    }
+
+    /**
+     * @param mixed $somatorioTitulos
+     * @return Trailler
+     */
+    public function setSomatorioTitulos($somatorioTitulos)
+    {
+        $this->somatorioTitulos = $somatorioTitulos;
+        return $this;
+    }
+
+
+
     public function criaLinha()
     {
         // TODO: Implement criaLinha() method.
         $linha = 9;
-        $linha .= str_pad('', 393);
+        $linha .= str_pad('', 26);
+        $linha .= $this->getSomatorioTitulos();
+        $linha .= str_pad('', 354);
         $linha .= $this->getSequencialRegistro();
 
         $linha .= "\r\n";

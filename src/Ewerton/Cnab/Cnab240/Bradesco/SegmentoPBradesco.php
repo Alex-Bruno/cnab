@@ -22,6 +22,8 @@ class SegmentoPBradesco extends SegmentoPGenerico
 
     protected $codigoBaixaDevolucao = 0;
 
+    protected $diasProtesto = 0;
+
     /**
      * @return mixed
      */
@@ -139,6 +141,24 @@ class SegmentoPBradesco extends SegmentoPGenerico
         return sprintf("%012s", $this->nossoNumero.$dv);
     }
 
+    /**
+     * @return int
+     */
+    public function getDiasProtesto()
+    {
+        return sprintf("%02d", $this->diasProtesto);
+    }
+
+    /**
+     * @param int $diasProtesto
+     * @return SegmentoPBradesco
+     */
+    public function setDiasProtesto($diasProtesto)
+    {
+        $this->diasProtesto = $diasProtesto;
+        return $this;
+    }
+
 
     /**
      * @return string
@@ -220,9 +240,9 @@ class SegmentoPBradesco extends SegmentoPGenerico
         //pos[196-220] Identificação do título na empresa
         $linha .= str_pad($this->getNumeroDocumento(), 25, ' ', STR_PAD_RIGHT);
         //pos[221 - 221] Código para protesto
-        $linha .= 3;
+        $linha .= ($this->diasProtesto) ? 1 : 3;
         //pos[222-223] Número de dias para protesto
-        $linha .= '00';
+        $linha .= $this->getDiasProtesto();
         //pos[224-224] Código para Baixa/Devolução
         $linha .= $this->getCodigoBaixaDevolucao();
         //pos[225-227] - Números de dias para baixa/devolução

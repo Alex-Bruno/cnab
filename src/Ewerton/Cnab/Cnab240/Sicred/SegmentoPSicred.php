@@ -209,8 +209,7 @@ class SegmentoPSicred extends SegmentoPGenerico
 
     public function getNossoNumero()
     {
-        $hoje = new \DateTime();
-        $ano = $hoje->format('y');
+        $ano = substr($this->dataEmissao, -2);
         $sequencialNN = sprintf("%05d", $this->nossoNumero);
 
         $nossoNumero = sprintf("%04d", $this->agencia) . $this->getPosto() .
@@ -307,7 +306,7 @@ class SegmentoPSicred extends SegmentoPGenerico
         //pos[118-118] Código do Juros de Mora
         $linha .= $this->getCodigoJurosMora();
         //pos[119-126] Data do juros de mora
-        $linha .= $this->getDataJurosMora();
+        $linha .= '00000000';
         //pos[127-141]
         $linha .= $this->getValorMoraDia();
         //pos[142-142] Código do Desconto 1

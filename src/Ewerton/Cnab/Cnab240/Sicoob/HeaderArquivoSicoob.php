@@ -121,7 +121,7 @@ class HeaderArquivoSicoob extends HeaderArquivoGenerico
         //pos[71-71] - 1
         $linha .= $this->getContaDv();
         //pos[72-72] - 1
-        $linha .= sprintf(str_pad('', 1));
+        $linha .= '0';
         //pos[73-102] - 30
         $linha .= $this->getNomeEmpresa();
         //pos[103-132] - 30

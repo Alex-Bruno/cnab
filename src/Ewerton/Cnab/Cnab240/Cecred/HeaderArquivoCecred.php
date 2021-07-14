@@ -139,7 +139,7 @@ class HeaderArquivoCecred extends HeaderArquivoGenerico
         //pos[164-166] - 3
         $linha .=$this->getVersaoLayoutArquivo();
         //pos[167-171]  - 5
-        $linha .=$this->getDensidadeArquivoGravacao();
+        $linha .= '00000';
         //pos[172-191] - 20
         $linha .= sprintf(str_pad('', 20));
         //pos[192-211] - 20

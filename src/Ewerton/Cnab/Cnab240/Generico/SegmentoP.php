@@ -87,6 +87,9 @@ abstract class SegmentoP implements CnabInterface
      */
     protected $dataDesconto = 0;
 
+
+    protected $diasProtesto = 0;
+
     /**
      * @return mixed
      */
@@ -407,5 +410,22 @@ abstract class SegmentoP implements CnabInterface
         }
     }
 
+      /**
+     * @return string
+     */
+    public function getDiasProtesto()
+    {
+        return sprintf("%02d", $this->diasProtesto);
+    }
+
+    /**
+     * @param string $diasProtesto
+     * @return SegmentoP
+     */
+    public function setDiasProtesto($diasProtesto)
+    {
+        $this->diasProtesto = $diasProtesto;
+        return $this;
+    }
 
 }

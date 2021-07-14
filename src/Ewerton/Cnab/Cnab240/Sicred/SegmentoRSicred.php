@@ -69,7 +69,7 @@ class SegmentoRSicred extends SegmentoRGenerico
         //pos[16-17]
         $linha .= $this->getCodMovimentoRemessa();
         //pos[18-18] Código do desconto 2
-        $linha .= 0;
+        $linha .= '0';
         //pos[19-26] Data do desconto 2
         $linha .= '00000000';
         //pos[27-41] Valor/Percentual a ser concedido

@@ -8,9 +8,9 @@ class SegmentoPCecred extends SegmentoPGenerico
 {
     use DadosBancarios;
 
-    protected $carteira;
+    protected $carteira = 1;
 
-    protected $formaCadastramento = 0;
+    protected $formaCadastramento = 1;
 
     protected $tipoDocumento = 1;
 
@@ -241,12 +241,12 @@ class SegmentoPCecred extends SegmentoPGenerico
         $linha .= sprintf(str_pad('', 1));
         //pos[38-57] - 12 nosso número + dv
         $linha .= $this->getNossoNumero();      //
-        //pos[58-58] - 3
-        $linha .= $this->getCarteira();
+        //pos[58-58] - 1
+        $linha .= 1;
         //pos[59-59] - 1
-        $linha .= $this->getFormaCadastramento();
+        $linha .= 1;
         //pos[60-60]  - 1
-        $linha .= $this->getTipoDocumento();
+        $linha .= 1;
         //pos[61-61] - 1
         $linha .= $this->getIdentificacaoEmissao();
         //pos[62-62] - 1
@@ -286,9 +286,9 @@ class SegmentoPCecred extends SegmentoPGenerico
         //pos[196-220] Identificação do título na empresa
         $linha .= str_pad($this->getNumeroDocumento(), 25, ' ', STR_PAD_RIGHT);
         //pos[221 - 221] Código para protesto
-        $linha .= 3;
+        $linha .= $this->diasProtesto ? 1 : 3;
         //pos[222-223] Número de dias para protesto
-        $linha .= '00';
+        $linha .= $this->diasProtesto ? $this->getDiasProtesto() : '00';
         //pos[224-224] Código para Baixa/Devolução
         $linha .= $this->getCodigoBaixaDevolucao();
         //pos[225-227] - Números de dias para baixa/devolução

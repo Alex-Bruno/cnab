@@ -218,11 +218,11 @@ class SegmentoP extends SegmentoPGenerico
         //pos[127-141]
         $linha .= $this->getValorMoraDia();
         //pos[142-142] Código do Desconto 1
-        $linha .= 0;
+        $linha .= $this->getCodigoDesconto();
         //pos[143 - 150] Data do Desconto 1
-        $linha .= '00000000';
+        $linha .= $this->getDataDesconto();
         //pos[151 - 165] Valor ou Percentual do desconto concedido
-        $linha .= '000000000000000';
+        $linha .= $this->getValorDesconto();
         //pos[166 - 180] Valor IOF
         $linha .= '000000000000000';
         //pos[181 - 195] Valor abatimento

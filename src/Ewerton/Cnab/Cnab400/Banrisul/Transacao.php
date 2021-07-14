@@ -18,7 +18,7 @@ class Transacao implements CnabInterface
     const CARTEIRA = 1;
     const COD_BANCO = '041';
     const TIPO_DOCUMENTO = '08';
-    const ACEITE = 'N';
+    const ACEITE = 'A';
     const COD_MORA = '0';
 
     private $codigoCedente;
@@ -43,6 +43,8 @@ class Transacao implements CnabInterface
     private $ocorrencia;
     private $dataDesconto = 0;
     private $valorDesconto = 0;
+    private $diasProtesto = "";
+    private $instrucaoProtesto = '00';
 
     /**
      * @return mixed
@@ -237,7 +239,7 @@ class Transacao implements CnabInterface
      */
     public function setNomePagador($nomePagador)
     {
-        $this->nomePagador = $nomePagador;
+        $this->nomePagador = FormataString::retiraCaracteresEspecial($nomePagador);
         return $this;
     }
 
@@ -255,7 +257,7 @@ class Transacao implements CnabInterface
      */
     public function setEndereco($endereco)
     {
-        $this->endereco = $endereco;
+        $this->endereco = FormataString::retiraCaracteresEspecial($endereco);
         return $this;
     }
 
@@ -266,7 +268,7 @@ class Transacao implements CnabInterface
      */
     public function setBairro($bairro)
     {
-        $this->bairro = $bairro;
+        $this->bairro = FormataString::retiraCaracteresEspecial($bairro);
         return $this;
     }
 
@@ -404,7 +406,7 @@ class Transacao implements CnabInterface
      */
     public function getValorDesconto()
     {
-        return sprintf("%013d", number_format($this->valorDesconto, 2,'',''));
+        return sprintf("%013d", $this->valorDesconto);
     }
 
     /**
@@ -413,7 +415,7 @@ class Transacao implements CnabInterface
      */
     public function setValorDesconto($valorDesconto)
     {
-        $this->valorDesconto = $valorDesconto;
+        $this->valorDesconto = number_format($valorDesconto, 2,'','');
         return $this;
     }
 
@@ -436,6 +438,32 @@ class Transacao implements CnabInterface
         }
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getDiasProtesto()
+    {
+        return sprintf("%2s", $this->diasProtesto);
+    }
+
+    /**
+     * @param int $diasProtesto
+     * @return Transacao
+     */
+    public function setDiasProtesto($diasProtesto)
+    {
+        if ($diasProtesto >= 3){
+            $this->diasProtesto = sprintf("%02d", $diasProtesto);
+            $this->instrucaoProtesto = '09';
+        } else if ( $diasProtesto < 3 and $diasProtesto > 0){
+            throw new \Exception('A quantidade de dias para protesto deve ser igual ou superior a 3');
+        } else {
+            $this->diasProtesto = "";
+        }
+        return $this;
+    }
+
 
 
     public function criaLinha()
@@ -478,7 +506,7 @@ class Transacao implements CnabInterface
         //pos [157-158]
         $linha .= 18;
         //pos [159-160]
-        $linha .= str_pad('', 2, 0);
+        $linha .= $this->instrucaoProtesto;
         //pos [161-161]
         $linha .= self::COD_MORA;
         //pos [162-173]
@@ -501,22 +529,24 @@ class Transacao implements CnabInterface
         $linha .= $this->getEndereco();
         //pos[315-321]
         $linha .= str_pad('', 7);
-        //pos[222-224]
+        //pos[322-224]
         $linha .= $this->getMulta();
-        //pos [225-226]
+        //pos [325-226]
         $linha .= '00';
-        //pos [227-334]
+        //pos [327-334]
         $linha .= $this->getCep();
         //pos [335-349]
         $linha .= $this->getCidade();
         //pos [350-351]
         $linha .= $this->getEstado();
         //pos [352-355]
-        $linha .= str_pad('', 4, 0);
+        $linha .= str_pad('', 4);
         //pos [356-357]
         $linha .= str_pad('', 2);
-        //pos [358-371]
-        $linha .= str_pad('', 14, 0);
+        //pos [358-369]
+        $linha .= str_pad('', 12);
+        //pos [370-371]
+        $linha .= $this->getDiasProtesto();
         //pos [372-394]
         $linha .= str_pad('', 23);
         //pos [395-400]

@@ -6,7 +6,7 @@
  * Time: 18:40
  */
 
-namespace Ewerton\Cnab\Cnab400\Bradesco;
+namespace Ewerton\Cnab\Cnab400\Uniprime;
 
 
 use Ewerton\Cnab\Cnab240\Generico\CnabInterface;
@@ -26,8 +26,7 @@ class Transacao extends TransacaoGenerico
     private $agencia;
     private $conta;
     private $conta_dv;
-    private $especie;
-    private $diasProtesto = 0;
+    private $numeroPagador;
 
     /**
      * @return mixed
@@ -101,6 +100,26 @@ class Transacao extends TransacaoGenerico
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getNumeroPagador()
+    {
+        return $this->numeroPagador;
+    }
+
+    /**
+     * @param mixed $numeroPagador
+     * @return Transacao
+     */
+    public function setNumeroPagador($numeroPagador)
+    {
+        $this->numeroPagador = $numeroPagador;
+        return $this;
+    }
+
+
+
 
     public function getNossoNumero()
     {
@@ -147,43 +166,7 @@ class Transacao extends TransacaoGenerico
      */
     public function getEndereco()
     {
-        return str_pad(strtoupper(substr($this->endereco. ' '. $this->bairro. ' '. $this->cidade. ' '. $this->estado, 0,40)), 40, ' ', STR_PAD_RIGHT);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEspecie()
-    {
-        return sprintf("%02d", $this->especie);
-    }
-
-    /**
-     * @param mixed $especie
-     * @return Transacao
-     */
-    public function setEspecie($especie)
-    {
-        $this->especie = $especie;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getDiasProtesto()
-    {
-        return sprintf("%02d", $this->diasProtesto);
-    }
-
-    /**
-     * @param int $diasProtesto
-     * @return Transacao
-     */
-    public function setDiasProtesto($diasProtesto)
-    {
-        $this->diasProtesto = $diasProtesto;
-        return $this;
+        return str_pad(strtoupper(substr($this->endereco. ' '. $this->numeroPagador .' '. $this->bairro. ' '. $this->cidade. ' '. $this->estado, 0,40)), 40, ' ', STR_PAD_RIGHT);
     }
 
     public function criaLinha()
@@ -191,14 +174,8 @@ class Transacao extends TransacaoGenerico
         // TODO: Implement criaLinha() method.
         //pos [1-1]
         $linha = 1;
-        //pos [2-6]
-        $linha .= str_pad('', 5, 0);
-        //pos [7-7]
-        $linha .= str_pad('', 1);
-        //pos [8-19]
-        $linha .= str_pad('', 12, 0);
-        //pos [20-20]
-        $linha .= str_pad('', 1);
+        //pos [2-20]
+        $linha .= str_pad('', 19);
         //pos [21-21]
         $linha .= '0';
         //pos [22-24]
@@ -212,7 +189,7 @@ class Transacao extends TransacaoGenerico
         //pos [38-62]
         $linha .= $this->getNumeroDocumeto();
         //pos [63-65]
-        $linha .= str_pad('', 3, 0);
+        $linha .= '084';
         //pos [66-66] código multa
         $linha .= '2';
         //pos [[67-70]
@@ -220,19 +197,11 @@ class Transacao extends TransacaoGenerico
         //pos[71-82]
         $linha .= $this->getNossoNumero();
         //pos[83-92]
-        $linha .= str_pad('', 10, 0);
-        //pos[93-93]
-        $linha .= str_pad('', 1, 2);
-        //pos[94-94]
-        $linha .= str_pad('', 1);
-        //pos[95-104]
         $linha .= str_pad('', 10);
-        //pos[105-105]
-        $linha .= str_pad('', 1);
-        //pos[106-106]
-        $linha .= str_pad('', 1, 2);
-        //pos[107-108]
-        $linha .= str_pad('', 2);
+        //pos[93-93]
+        $linha .= '2';
+        //pos[94-108]
+        $linha .= str_pad('', 15);
         //pos [109-110]
         $linha .= $this->getOcorrencia();
         //pos [111-120]
@@ -241,26 +210,26 @@ class Transacao extends TransacaoGenerico
         $linha .= $this->getVencimento();
         //pos [127-139]
         $linha .= $this->getValor();
-        //pos [140-142]
-        $linha .= str_pad('', 3, 0);
-        //pos [143-147]
-        $linha .= str_pad('', 5, 0);
+        //pos [140-147]
+        $linha .= str_pad('', 8);
         //pos [148-149]
-        $linha .= ($this->especie) ? $this->getEspecie() : self::TIPO_DOCUMENTO;
+        $linha .= self::TIPO_DOCUMENTO;
         //pos [150-150]
         $linha .= self::ACEITE;
         //pos [151-156]
         $linha .= $this->getDataEmissao();
         //pos [157-160]
-        $linha .= ($this->diasProtesto) ? '06' . $this->getDiasProtesto() : str_pad('', 4, 0);
+        $linha .= str_pad('', 4, 0);
         //pos [161-173]
         $linha .= $this->getValorMoraDia();
         //pos [174-179]
         $linha .= $this->getDataDesconto();
         //pos [180 - 192]
         $linha .= $this->getValorDesconto();
-        //pos [193 - 218]
-        $linha .= str_pad('', 26, 0);
+        //pos [193 - 205]
+        $linha .= str_pad('', 13);
+        //pos [206 - 218]
+        $linha .= str_pad('', 13, 0);
         //pos[219-220]
         $linha .= $this->getTipoInscricaoPagador();
         //pos[221-234]
@@ -273,8 +242,12 @@ class Transacao extends TransacaoGenerico
         $linha .= str_pad('', 12);
         //pos [227-334]
         $linha .= $this->getCep();
-        //pos [335-394]
-        $linha .= str_pad('', 60);
+        //pos [335-354]
+        $linha .= str_pad(strtoupper(substr($this->bairro, 0,20)), 20, ' ', STR_PAD_RIGHT);
+        //pos [355-392]
+        $linha .= str_pad(strtoupper(substr($this->cidade, 0,38)), 38, ' ', STR_PAD_RIGHT);
+        //pos [393-394]
+        $linha .= str_pad(strtoupper(substr($this->estado, 0,2)), 2, ' ', STR_PAD_RIGHT);
         //pos [395-400]
         $linha .= $this->getSequencialRegistro();
 
