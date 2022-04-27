@@ -21,7 +21,7 @@ Este projeto foi inspirado no Cnab_PHP do Anderson Danilo (andersondanilo/cnab_p
 
 | Banco           | Versão da Remessa  | Versão do Retorno  |
 |-----------------|--------------------|--------------------|
-| BANRISUL        | 240 (Beta)         |                    |
-| BANCO_DO_BRASIL | 240 (Beta)         |                    |
-| BRADESCO        | 240 (Beta)         |                    |
-| CRESOL          | 240 (Beta)         |                    |
+| BANRISUL        | 400 (Beta)         |                    |
+| BANCO_DO_BRASIL | 400 (Beta)         |                    |
+| BRADESCO        | 400 (Beta)         |                    |
+| CRESOL          | 400 (Beta)         |                    |
