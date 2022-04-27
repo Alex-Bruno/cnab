@@ -18,6 +18,7 @@ class Banco
     const SICOOB = 756;
     const CECRED = 85;
     const SICREDI = 748;
+    const CRESOL = 133;
 
     public static function getBanco($codigo)
     {
@@ -39,7 +40,7 @@ class Banco
         } elseif ($codigo == self::SANTANDER) {
             return array(
                 'codigo_do_banco' => self::SANTANDER,
-                'nome_do_banco' => 'BANCO SANTANDER',
+                'nome_do_banco' => 'BANCO SANTANDER (BRASIL) S/A',
             );
         } elseif ($codigo == self::BRADESCO) {
             return array(
@@ -66,6 +67,11 @@ class Banco
                 'codigo_do_banco' => self::SICREDI,
                 'nome_do_banco' => 'SICREDI',
             );
+        }elseif ($codigo == self::CRESOL) {
+            return array(
+                'codigo_do_banco' => self::CRESOL,
+                'nome_do_banco' => 'SICREDI',
+            );
         }
         else {
             return false;
@@ -79,3 +85,4 @@ class Banco
         return $banco ? true : false;
     }
 }
+
