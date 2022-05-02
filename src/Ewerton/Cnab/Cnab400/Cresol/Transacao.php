@@ -89,25 +89,20 @@ class Transacao implements CnabInterface
 
     public function getNossoNumero()
     {
-        $dv = $this->modulo_10($this->nossoNumero);
-        $resto = $this->modulo_11($this->nossoNumero . $dv, 7, 1);
+        $carteira = str_pad($this->getCarteira(), 2, 0,  STR_PAD_LEFT);
+        $numero = $carteira."".str_pad($this->nossoNumero, 11, 0, STR_PAD_LEFT);
+
+        $resto = $this->modulo_11($numero, 7, 1);
 
         if ($resto == 1) {
-            if ($dv == 9) {
-                $dv = 0;
-                $resto = $this->modulo_11($this->nossoNumero . $dv, 7, 1);
-            } else {
-                $dv++;
-                $resto = $this->modulo_11($this->nossoNumero . $dv, 7, 1);
-            }
+            $dv2 = 'P';
         } else if ($resto == 0) {
             $dv2 = 0;
-            return sprintf("%010d", $this->nossoNumero . $dv . $dv2);
+        } else {
+            $dv2 = 11 - $resto;
         }
 
-        $dv2 = 11 - $resto;
-
-        return sprintf("%010d", $this->nossoNumero . $dv . $dv2);
+        return sprintf("%010d", $this->nossoNumero . $dv2);
     }
 
     /**
@@ -629,52 +624,9 @@ class Transacao implements CnabInterface
         $linha .= str_pad('', 60, ' ');
         //pos [395-400]
         $linha .= $this->getSequencialRegistro();
-
-
-
-
-
+        
         $linha .= "\r\n";
         return $linha;
-    }
-
-
-    private function modulo_10($num)
-    {
-        $numtotal10 = 0;
-        $fator = 2;
-
-        // Separacao dos numeros
-        for ($i = strlen($num); $i > 0; $i--) {
-            // pega cada numero isoladamente
-            $numeros[$i] = substr($num, $i - 1, 1);
-            // Efetua multiplicacao do numero pelo (falor 10)
-            // 2002-07-07 01:33:34 Macete para adequar ao Mod10 do Ita�
-            $temp = $numeros[$i] * $fator;
-            $temp0 = 0;
-            foreach (preg_split('//', $temp, -1, PREG_SPLIT_NO_EMPTY) as $k => $v) {
-                $temp0 += $v;
-            }
-            $parcial10[$i] = $temp0; //$numeros[$i] * $fator;
-            // monta sequencia para soma dos digitos no (modulo 10)
-            $numtotal10 += $parcial10[$i];
-            if ($fator == 2) {
-                $fator = 1;
-            } else {
-                $fator = 2; // intercala fator de multiplicacao (modulo 10)
-            }
-        }
-
-        // v�rias linhas removidas, vide fun��o original
-        // Calculo do modulo 10
-        $resto = $numtotal10 % 10;
-        $digito = 10 - $resto;
-        if ($resto == 0) {
-            $digito = 0;
-        }
-
-        return $digito;
-
     }
 
     private function modulo_11($num, $base = 9, $r = 0)
