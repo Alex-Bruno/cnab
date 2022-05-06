@@ -350,7 +350,7 @@ class Transacao implements CnabInterface
      */
     public function getMulta()
     {
-        return sprintf("%03d", number_format($this->multa, 1,'',''));
+        return sprintf("%04d", number_format($this->multa, 2,'',''));
     }
 
     /**
