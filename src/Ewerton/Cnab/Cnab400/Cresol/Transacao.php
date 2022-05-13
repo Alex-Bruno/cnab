@@ -102,7 +102,7 @@ class Transacao implements CnabInterface
             $dv2 = 11 - $resto;
         }
 
-        return sprintf("%010d", $this->nossoNumero . $dv2);
+        return sprintf("%010s", $this->nossoNumero . $dv2);
     }
 
     /**
@@ -624,7 +624,7 @@ class Transacao implements CnabInterface
         $linha .= str_pad('', 60, ' ');
         //pos [395-400]
         $linha .= $this->getSequencialRegistro();
-        
+
         $linha .= "\r\n";
         return $linha;
     }
