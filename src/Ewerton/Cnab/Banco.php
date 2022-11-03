@@ -19,6 +19,7 @@ class Banco
     const CECRED = 85;
     const SICREDI = 748;
     const CRESOL = 133;
+    const SAFRA = 422;
 
     public static function getBanco($codigo)
     {
@@ -70,7 +71,12 @@ class Banco
         }elseif ($codigo == self::CRESOL) {
             return array(
                 'codigo_do_banco' => self::CRESOL,
-                'nome_do_banco' => 'SICREDI',
+                'nome_do_banco' => 'CRESOL',
+            );
+        }elseif ($codigo == self::SAFRA) {
+            return array(
+                'codigo_do_banco' => self::SAFRA,
+                'nome_do_banco' => 'SAFRA',
             );
         }
         else {
